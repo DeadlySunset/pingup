@@ -1,0 +1,259 @@
+{
+  "common": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "back": "← Back",
+    "durationMin": "{n} min",
+    "durationHour": "{n} h",
+    "durationDay": "{n} d"
+  },
+  "home": {
+    "signedInAs": "Signed in as {name}",
+    "signOut": "Sign out",
+    "yourMonitors": "Your monitors",
+    "noMonitors": "You haven't added any monitors yet.",
+    "newMonitor": "New monitor",
+    "channels": "Alert channels",
+    "lastPingPrefix": "last ping"
+  },
+  "channels": {
+    "title": "Alert channels",
+    "subtitle": "Where Pingup sends you alerts when a monitor goes down or recovers. Verified channels are auto-attached to every new monitor.",
+    "add": "Add",
+    "adding": "Adding…",
+    "remove": "Remove",
+    "removing": "Removing…",
+    "pending": "Pending verification",
+    "verifiedOn": "Verified on {date}",
+    "deleteConfirm": "Remove {target}? Alerts will stop going to this address.",
+    "deleteConfirmTelegram": "Remove this Telegram channel? Alerts will stop going there.",
+    "autoAttachNote": "New verified channels are automatically attached to all your monitors. Remove them here to stop delivery.",
+    "errors": {
+      "email": "Give a valid email address."
+    },
+    "email": {
+      "title": "Email",
+      "body": "Delivered via Resend. Email addresses that match your GitHub-verified email are trusted automatically.",
+      "addLabel": "Add an email address",
+      "addHint": "If this address matches your GitHub email, it's verified instantly. Otherwise it stays pending (verification flow lands in the next release)."
+    },
+    "telegram": {
+      "title": "Telegram",
+      "body": "Instant pushes from a bot. Add a channel, then hit /verify in the bot to link it to this account.",
+      "add": "Add Telegram",
+      "pending": "Telegram — pending verification",
+      "pendingHint": "Send the /verify command below to the bot to link this channel.",
+      "connectedAs": "Telegram — connected as {target}",
+      "verifyTitle": "Verify in Telegram",
+      "verifyBody": "Open {bot} and send the command below. Your verification code is {code}.",
+      "openBot": "Open bot in Telegram"
+    }
+  },
+  "monitors": {
+    "types": {
+      "heartbeat": "Heartbeat",
+      "ping": "Ping"
+    },
+    "status": {
+      "up": "up",
+      "down": "down",
+      "unknown": "pending"
+    },
+    "intervals": {
+      "1m": "1 min",
+      "5m": "5 min",
+      "15m": "15 min",
+      "30m": "30 min",
+      "1h": "1 hour",
+      "6h": "6 hours",
+      "24h": "24 hours"
+    },
+    "timeouts": {
+      "5s": "5 seconds",
+      "10s": "10 seconds",
+      "20s": "20 seconds"
+    },
+    "new": {
+      "nameLabel": "Name",
+      "nameHint": "Shown in the dashboard and alerts.",
+      "namePlaceholder": "Nightly backup",
+      "create": "Create monitor",
+      "creating": "Creating…",
+      "heartbeat": {
+        "title": "New heartbeat monitor",
+        "subtitle": "Point your cron at a unique URL. We'll alert you if the expected ping doesn't arrive.",
+        "intervalLabel": "Expected interval",
+        "intervalHint": "How often your cron should ping us. Grace period is auto-set to 20% of the interval."
+      },
+      "ping": {
+        "title": "New ping monitor",
+        "subtitle": "We'll call your URL from our side on a schedule and alert when it doesn't respond.",
+        "urlLabel": "URL",
+        "urlHint": "Must be reachable from the public internet. HTTP or HTTPS.",
+        "intervalLabel": "Check interval",
+        "intervalHint": "How often we call your URL. Shorter intervals are Pro-only later.",
+        "statusLabel": "Expected HTTP status",
+        "statusHint": "We mark the monitor down on any other code.",
+        "timeoutLabel": "Timeout",
+        "timeoutHint": "A slower response is treated as down."
+      },
+      "errors": {
+        "name": "Give the monitor a name.",
+        "interval": "Pick one of the supported intervals.",
+        "url": "URL must be a valid http(s) address.",
+        "status": "Pick one of the supported status codes.",
+        "timeout": "Timeout must be between 1 and 30 seconds."
+      }
+    },
+    "detail": {
+      "typeLabel": "Monitor type",
+      "urlTitle": "Heartbeat URL",
+      "urlHint": "Your cron hits this URL every run. Keep it secret — anyone with the link can mark this monitor up.",
+      "targetUrlTitle": "Target URL",
+      "targetUrlHint": "The URL we check on each tick.",
+      "exampleCurlTitle": "Drop this in your crontab",
+      "exampleCurlHint": "-m 10 caps wait at 10s so a slow Pingup response never blocks your cron.",
+      "interval": "Expected interval",
+      "grace": "Grace period",
+      "expectedStatus": "Expected status",
+      "timeout": "Timeout",
+      "lastPing": "Last ping",
+      "lastPingNever": "No pings yet",
+      "lastChecked": "Last checked",
+      "lastCheckedNever": "Not checked yet",
+      "created": "Created",
+      "recentChecks": "Recent checks",
+      "noChecks": "No checks recorded yet. Run your cron once or hit the URL from your browser to see it here.",
+      "dangerZone": "Danger zone",
+      "deleteHint": "Removes this monitor and all recorded checks. This can't be undone.",
+      "delete": "Delete monitor",
+      "deleting": "Deleting…",
+      "deleteConfirm": "Delete {name}? All check history will be lost. This can't be undone."
+    }
+  },
+  "landing": {
+    "hero": {
+      "kicker": "Simple uptime for indie devs",
+      "title": "Monitoring that catches silent failures.",
+      "subtitle": "Pingup watches your sites and cron jobs. Heartbeat monitors notice when a cron quietly dies. Ping monitors hit your URLs from the outside. Alerts land in email or Telegram in seconds.",
+      "cta": "Start monitoring — free",
+      "ctaNote": "No credit card. Free tier forever. Pay in TON when you grow.",
+      "bullets": [
+        "3 monitors free",
+        "Email + Telegram alerts",
+        "Heartbeat & ping types",
+        "Pay in TON"
+      ]
+    },
+    "mock": {
+      "statusBar": "All good",
+      "responseTime": "Response time",
+      "rows": [
+        { "name": "api.example.com", "status": "up", "detail": "24ms · every 1m" },
+        { "name": "Weekly digest cron", "status": "up", "detail": "2h ago · heartbeat" },
+        { "name": "status.example.com", "status": "down", "detail": "12m · 503" },
+        { "name": "Nightly DB backup", "status": "up", "detail": "5h ago · heartbeat" }
+      ]
+    },
+    "types": {
+      "title": "Two ways to watch",
+      "subtitle": "Pick the right monitor for the job. Mix and match — most teams run both.",
+      "heartbeat": {
+        "tag": "Passive",
+        "title": "Heartbeat",
+        "body": "Your cron POSTs to a unique URL every run. If no ping arrives within the expected window + grace, we alert you. Perfect for jobs that die silently.",
+        "example": "e.g. backups, weekly emails, data pipelines"
+      },
+      "ping": {
+        "tag": "Active",
+        "title": "Ping",
+        "body": "We call your URL every 1 / 5 / 15 minutes from our side and check for a 2xx response. Perfect for sites, APIs, and status endpoints.",
+        "example": "e.g. landing pages, APIs, webhooks"
+      }
+    },
+    "how": {
+      "title": "From zero to watching in 60 seconds",
+      "steps": [
+        {
+          "n": "01",
+          "title": "Sign in with GitHub",
+          "body": "One click. No form, no config. We only read your profile and email."
+        },
+        {
+          "n": "02",
+          "title": "Add a monitor",
+          "body": "Paste a URL, or grab a heartbeat link and wire it into your cron. That's the whole setup."
+        },
+        {
+          "n": "03",
+          "title": "Get alerts where you look",
+          "body": "Email is on by default. Connect Telegram for instant push. Attach any channel to any monitor."
+        }
+      ]
+    },
+    "alerts": {
+      "title": "Alerts where you already look",
+      "subtitle": "No extra dashboards to babysit. Add channels once, attach them to any monitor.",
+      "email": {
+        "title": "Email",
+        "body": "Delivered via Resend. Goes to the same inbox you already check every morning."
+      },
+      "telegram": {
+        "title": "Telegram",
+        "body": "Instant push from a bot you /start once. Great for phone notifications that actually reach you."
+      }
+    },
+    "pro": {
+      "title": "Scaling up?",
+      "subtitle": "Free tier gets you 3 monitors and a 5-minute interval. Pro unlocks 25 monitors, 1-minute checks, Telegram, and a public status page.",
+      "bullets": [
+        "25 monitors",
+        "1-minute check interval",
+        "Email + Telegram",
+        "Public status page",
+        "1-year history"
+      ],
+      "cta": "See pricing"
+    },
+    "faq": {
+      "title": "Questions",
+      "items": [
+        {
+          "q": "What's the difference between heartbeat and ping?",
+          "a": "Heartbeat is passive — your cron calls us when it runs, and we alert if it doesn't. Ping is active — we call your URL on a schedule and alert if it doesn't respond. Use heartbeat for jobs (backups, reports, pipelines). Use ping for things that should be reachable from the internet (sites, APIs)."
+        },
+        {
+          "q": "How fast are the alerts?",
+          "a": "Heartbeat alerts fire within a minute of the expected window closing. Ping alerts fire on the next failed check. Telegram delivery is typically under 5 seconds end-to-end."
+        },
+        {
+          "q": "Does Pingup cost anything on the free tier?",
+          "a": "No. 3 monitors and a 5-minute check interval for free, forever. Upgrade to Pro when you outgrow it — pay monthly or annually in TON."
+        },
+        {
+          "q": "Where does Pingup check from?",
+          "a": "From our Hetzner server in Europe. Multi-region checks are on the roadmap for Pro."
+        },
+        {
+          "q": "Can I use this for private URLs?",
+          "a": "Yes — heartbeat monitors work for anything that can make an outbound HTTP request, including services behind a firewall. For ping monitors, the URL must be reachable from the public internet."
+        },
+        {
+          "q": "Why pay in TON?",
+          "a": "It's native crypto, fast, and works worldwide without card-processor drama. We're indie too — TON keeps the fees low so more of what you pay reaches us."
+        }
+      ]
+    },
+    "bottomCta": {
+      "title": "Stop finding out hours later.",
+      "subtitle": "Set up your first monitor in under a minute. Free tier — no card needed.",
+      "cta": "Sign in with GitHub"
+    },
+    "footer": {
+      "copyright": "© 2026 Pingup"
+    }
+  }
+}

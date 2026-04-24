@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
+/* Class-based dark variant — required for next-themes to switch via .dark on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -12,15 +20,227 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* --- Animations --- */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.5s ease-out both;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.4s ease-out both;
+}
+
+/* Ping wave — expanding ring around a status dot */
+@keyframes ping-wave {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+@utility ping-wave {
+  animation: ping-wave 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Sparkline — line draws in, area fades, end-dot breathes */
+@keyframes spark-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes spark-dot {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.8); opacity: 0.35; }
+}
+.spark-line {
+  stroke-dasharray: 520;
+  stroke-dashoffset: 520;
+  animation: spark-draw 1.6s 0.2s ease-out forwards;
+}
+.spark-area {
+  opacity: 0;
+  animation: fade-in 0.6s 1.6s ease-out forwards;
+}
+.spark-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spark-dot 1.8s 2s ease-in-out infinite;
+}
+
+/* Continuous leftward flow — pattern is duplicated so translating by one
+   period produces a seamless loop. */
+@keyframes spark-flow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-320px); }
+}
+.spark-flow {
+  animation: spark-flow 9s linear 1.8s infinite;
+}
+
+/* Uptime bar strip slides left; strip holds 2 periods of cells so the
+   translate by one period (-120px = 24 cells × 5px pitch) is seamless. */
+@keyframes bar-flow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-120px); }
+}
+.bar-flow {
+  animation: bar-flow 10s linear infinite;
+}
+
+/* Subtle breathing glow behind the dashboard card */
+@keyframes card-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 0.8; transform: scale(1.04); }
+}
+.card-glow {
+  animation: card-glow 4s ease-in-out infinite;
+}
+
+/* Bars stagger — each cell fades in with per-index delay via inline --i */
+@keyframes bar-in {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bar-in {
+  animation: bar-in 0.3s ease-out both;
+  animation-delay: calc(var(--i, 0) * 25ms + 400ms);
+}
+
+/* Scroll-triggered reveal via animation-timeline (modern browsers).
+   Graceful fallback: always visible if not supported. */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@utility reveal-on-scroll {
+  animation: reveal-up linear both;
+  animation-timeline: view();
+  animation-range: entry 0% entry 40%;
+}
+@supports not (animation-timeline: view()) {
+  .reveal-on-scroll {
+    animation: none;
+  }
+}
+
+/* Animated aurora — three blobs drifting behind hero sections */
+
+@keyframes blob-drift-1 {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  25%  { transform: translate(160px, -90px) scale(1.3) rotate(45deg); }
+  50%  { transform: translate(60px, 110px) scale(0.85) rotate(90deg); }
+  75%  { transform: translate(-120px, 40px) scale(1.15) rotate(135deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(180deg); }
+}
+
+@keyframes blob-drift-2 {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%  { transform: translate(-140px, 80px) scale(1.2) rotate(-60deg); }
+  66%  { transform: translate(80px, -70px) scale(0.9) rotate(-120deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(-180deg); }
+}
+
+@keyframes blob-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(100px, -120px) scale(1.4); }
+}
+
+.aurora-wrap {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.6;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.aurora-blob-1 {
+  top: -8%;
+  left: 8%;
+  width: 520px;
+  height: 520px;
+  background: rgb(245 158 11); /* amber-500 */
+  animation: blob-drift-1 14s ease-in-out infinite;
+}
+
+.aurora-blob-2 {
+  top: 15%;
+  right: 0%;
+  width: 440px;
+  height: 440px;
+  background: rgb(249 115 22); /* orange-500 */
+  animation: blob-drift-2 11s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.aurora-blob-3 {
+  bottom: -15%;
+  left: 30%;
+  width: 380px;
+  height: 380px;
+  background: rgb(250 204 21); /* yellow-400 */
+  animation: blob-drift-3 9s ease-in-out infinite;
+  animation-delay: -5s;
+  opacity: 0.45;
+}
+
+.dark .aurora-blob {
+  opacity: 0.4;
+}
+.dark .aurora-blob-3 {
+  opacity: 0.3;
+}
+
+@utility card-hover {
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -12px rgb(217 119 6 / 0.22);
+  border-color: rgb(217 119 6 / 0.5);
+}
+.dark .card-hover:hover {
+  box-shadow: 0 10px 24px -12px rgb(251 191 36 / 0.28);
+  border-color: rgb(251 191 36 / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .card-hover,
+  .aurora-blob {
+    animation: none !important;
+    transition: none !important;
+  }
 }
