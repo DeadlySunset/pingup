@@ -2,6 +2,26 @@
   "name": "pingup",
   "version": "0.1.0",
   "private": true,
+  "description": "Uptime and cron monitoring for indie devs. Heartbeat & ping monitors, email + Telegram alerts, Pro paid in TON.",
+  "license": "MIT",
+  "author": "DeadlySunset",
+  "homepage": "https://github.com/DeadlySunset/pingup#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeadlySunset/pingup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DeadlySunset/pingup/issues"
+  },
+  "keywords": [
+    "uptime",
+    "monitoring",
+    "heartbeat",
+    "cron",
+    "ton",
+    "telegram",
+    "nextjs"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
