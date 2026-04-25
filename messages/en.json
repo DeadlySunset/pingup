@@ -131,7 +131,21 @@
       "deleteHint": "Removes this monitor and all recorded checks. This can't be undone.",
       "delete": "Delete monitor",
       "deleting": "Deleting…",
-      "deleteConfirm": "Delete {name}? All check history will be lost. This can't be undone."
+      "deleteConfirm": "Delete {name}? All check history will be lost. This can't be undone.",
+      "edit": "Edit",
+      "disabled": "disabled"
+    },
+    "edit": {
+      "title": "Edit · {name}",
+      "subtitleHeartbeat": "Tweak the name, interval, or temporarily disable this heartbeat.",
+      "subtitlePing": "Tweak the name, target URL, or schedule. Changing the URL resets the live status.",
+      "enabledLabel": "Active",
+      "enabledHint": "When off, the monitor stops checking and incoming pings are ignored. Existing alerts and history are preserved.",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "ping": {
+        "urlHint": "Changing this resets the current status — we'll re-evaluate on the next tick."
+      }
     }
   },
   "landing": {
@@ -255,5 +269,73 @@
     "footer": {
       "copyright": "© 2026 Pingup"
     }
+  },
+  "pricing": {
+    "title": "Pricing",
+    "subtitle": "Free forever for small projects. Upgrade to Pro when you need more monitors, faster checks, or Telegram alerts.",
+    "perMonth": "month",
+    "paidInTon": "Paid in TON. Renew monthly or annually.",
+    "tierName": {
+      "free": "Free",
+      "pro": "Pro"
+    },
+    "free": {
+      "tagline": "Enough to watch your weekend project.",
+      "features": {
+        "monitors": "{n} monitors",
+        "interval": "{n}-minute minimum check interval",
+        "email": "Email alerts",
+        "history": "30 days of history"
+      },
+      "cta": "Sign in with GitHub",
+      "ctaSignedIn": "You're on Free"
+    },
+    "pro": {
+      "badge": "Most popular",
+      "tagline": "Production-grade monitoring without the Datadog bill.",
+      "features": {
+        "monitors": "{n} monitors",
+        "interval": "{n}-minute check interval",
+        "telegram": "Telegram + email alerts",
+        "statusPage": "Public status page",
+        "history": "1 year of history"
+      }
+    },
+    "subscribeMonthly": "Subscribe — ${price}/mo",
+    "subscribeAnnual": "Pay yearly — ${price} (save {savings}%)",
+    "signInFirst": "Sign in to subscribe",
+    "alreadyActive": "You're on Pro until {until}. Renewals stack from that date.",
+    "reason": {
+      "monitors": "You're at the {limit}-monitor limit on Free. Upgrade to Pro for more.",
+      "interval": "Check intervals under {interval} minutes are Pro-only.",
+      "telegram": "Telegram alerts are Pro-only. Email alerts work on every plan."
+    },
+    "footnote": "No card processor fees, no cancellation fees. Stop paying — we'll downgrade you to Free at the end of your paid period."
+  },
+  "subscribe": {
+    "title": "Pay with TON",
+    "subtitle": "Pro · {period}",
+    "period": {
+      "monthly": "monthly",
+      "annual": "annual"
+    },
+    "manualTitle": "Pay manually (QR / wallet link)",
+    "openInWallet": "Open in TON wallet",
+    "amount": "Amount",
+    "address": "To address",
+    "comment": "Comment",
+    "expiresAt": "Quote valid until",
+    "commentWarning": "Important: include the comment exactly as shown — that's how we match the payment to your account.",
+    "pollingHint": "This page refreshes every 10 seconds and flips to a confirmation as soon as the payment lands on-chain.",
+    "payNow": "Pay {amount} TON now",
+    "paySending": "Sending…",
+    "payBroadcast": "Sent to your wallet — finalizing on-chain.",
+    "payError": "Wallet error",
+    "paidTitle": "You're on Pro 🎉",
+    "paidBody": "Your subscription is active. New monitors and Telegram alerts are unlocked.",
+    "expiredTitle": "Quote expired",
+    "expiredBody": "TON prices move — start a fresh checkout to get a new quote.",
+    "backHome": "Back to monitors",
+    "backToPricing": "Back to pricing"
   }
 }

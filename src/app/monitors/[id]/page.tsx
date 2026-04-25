@@ -74,13 +74,26 @@ export default async function MonitorDetailPage({
       </Link>
 
       <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">{monitor.name}</h1>
-          <span
-            className={`rounded-full px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide ${statusClass}`}
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-2xl font-semibold tracking-tight">{monitor.name}</h1>
+            <span
+              className={`rounded-full px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide ${statusClass}`}
+            >
+              {t(`monitors.status.${monitor.currentStatus}`)}
+            </span>
+            {!monitor.enabled && (
+              <span className="rounded-full bg-zinc-200 px-2 py-0.5 text-[11px] font-medium uppercase tracking-wide text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+                {t("monitors.detail.disabled")}
+              </span>
+            )}
+          </div>
+          <Link
+            href={`/monitors/${id}/edit`}
+            className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
           >
-            {t(`monitors.status.${monitor.currentStatus}`)}
-          </span>
+            {t("monitors.detail.edit")}
+          </Link>
         </div>
         <p className="text-xs text-zinc-500">
           {t("monitors.detail.typeLabel")} ·{" "}

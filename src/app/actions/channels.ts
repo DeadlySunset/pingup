@@ -6,17 +6,10 @@ import { and, eq, isNotNull } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { alertChannels, monitorChannels, monitors } from "@/lib/db/schema";
+import { getSubscription } from "@/lib/subscription";
+import { generateVerificationCode } from "@/lib/alerts/codes";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function generateVerificationCode(): string {
-  // 6-char readable code — user types it into Telegram as `/verify XXXXXX`.
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  let out = "";
-  const buf = crypto.getRandomValues(new Uint8Array(6));
-  for (const b of buf) out += alphabet[b % alphabet.length];
-  return out;
-}
 
 async function attachChannelToAllUserMonitors(
   userId: string,
@@ -82,6 +75,9 @@ export async function createEmailChannel(formData: FormData) {
 export async function createTelegramChannel() {
   const session = await auth();
   if (!session?.user?.id) redirect("/");
+
+  const sub = await getSubscription(session.user.id);
+  if (!sub.allowsTelegram) redirect("/pricing?reason=telegram");
 
   // Only one pending Telegram channel at a time — avoids a pile-up of codes.
   const [pending] = await db

@@ -2,6 +2,7 @@ import { eq, isNotNull, and } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { alertChannels, monitorChannels, monitors } from "@/lib/db/schema";
 import { sendAlertEmail } from "@/lib/email";
+import { sendAlertTelegram } from "@/lib/telegram";
 
 type Monitor = typeof monitors.$inferSelect;
 
@@ -38,8 +39,17 @@ export async function dispatchStatusChange(
           status: newStatus,
           reason,
         });
+      } else if (r.kind === "telegram") {
+        // target is the chat_id stored by the webhook after /verify.
+        if (!r.target) return;
+        await sendAlertTelegram({
+          chatId: r.target,
+          monitorName: monitor.name,
+          monitorId: monitor.id,
+          status: newStatus,
+          reason,
+        });
       }
-      // telegram: stub — real sender lands with the bot webhook iteration.
     }),
   );
 }

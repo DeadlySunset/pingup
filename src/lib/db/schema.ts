@@ -131,6 +131,30 @@ export const alertChannels = pgTable("alert_channel", {
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 });
 
+export type InvoicePeriod = "monthly" | "annual";
+export type InvoiceStatus = "pending" | "paid" | "expired";
+
+export const invoices = pgTable("invoice", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  // Unique on-chain comment we look for in incoming TON messages.
+  comment: text("comment").notNull().unique(),
+  period: text("period").$type<InvoicePeriod>().notNull(),
+  // numeric-as-text to avoid float drift
+  usdAmount: text("usdAmount").notNull(),
+  // 9-decimal string ("3.250000000")
+  tonAmount: text("tonAmount").notNull(),
+  // rate at quote time, for audit
+  tonRateUsd: text("tonRateUsd").notNull(),
+  status: text("status").$type<InvoiceStatus>().notNull().default("pending"),
+  txHash: text("txHash"),
+  paidAt: timestamp("paidAt"),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
 export const monitorChannels = pgTable(
   "monitor_channel",
   {

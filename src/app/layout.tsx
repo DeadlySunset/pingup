@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/components/theme-provider";
+import { TonConnectProvider } from "@/components/ton-connect-provider";
 import { Header } from "@/components/header";
 import "./globals.css";
 
@@ -18,6 +19,8 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const appUrl = (process.env.APP_URL || "http://localhost:3000").replace(/\/$/, "");
+  const manifestUrl = `${appUrl}/tonconnect-manifest.json`;
 
   return (
     <html
@@ -28,8 +31,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-            <Header />
-            <main className="flex flex-1 flex-col">{children}</main>
+            <TonConnectProvider manifestUrl={manifestUrl}>
+              <Header />
+              <main className="flex flex-1 flex-col">{children}</main>
+            </TonConnectProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>
