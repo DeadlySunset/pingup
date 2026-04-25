@@ -5,7 +5,10 @@ import { auth, signIn, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { alertChannels, monitors, users } from "@/lib/db/schema";
 import { Sparkline } from "@/components/sparkline";
+import { ProfileCard } from "@/components/profile-card";
+import { AdSlot } from "@/components/ad-slot";
 import { dismissOnboarding } from "@/app/actions/user";
+import { getSubscription } from "@/lib/subscription";
 
 type Bullet = string;
 type Step = { n: string; title: string; body: string };
@@ -275,7 +278,7 @@ export default async function Home() {
     );
   }
 
-  const [userMonitors, locale, verifiedChannelRow, userRow] = await Promise.all([
+  const [userMonitors, locale, verifiedChannelRow, userRow, sub] = await Promise.all([
     db
       .select()
       .from(monitors)
@@ -296,6 +299,7 @@ export default async function Home() {
       .from(users)
       .where(eq(users.id, session.user.id))
       .limit(1),
+    getSubscription(session.user.id),
   ]);
 
   const verifiedChannelCount = Number(verifiedChannelRow[0]?.count ?? 0);
@@ -307,13 +311,16 @@ export default async function Home() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-semibold tracking-tight">{t("home.yourMonitors")}</h1>
-          <p className="text-xs text-zinc-500">
-            {t("home.signedInAs", { name: session.user.name ?? session.user.email ?? "" })}
-          </p>
-        </div>
+      <ProfileCard
+        name={session.user.name}
+        email={session.user.email}
+        image={session.user.image}
+        sub={sub}
+        verifiedChannelCount={verifiedChannelCount}
+      />
+
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-semibold tracking-tight">{t("home.yourMonitors")}</h1>
         <div className="flex items-center gap-2">
           <Link
             href="/channels"
@@ -420,6 +427,8 @@ export default async function Home() {
           })}
         </ul>
       )}
+
+      {sub.tier === "free" && <AdSlot />}
     </div>
   );
 }

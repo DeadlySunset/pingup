@@ -244,7 +244,7 @@ export default async function MonitorDetailPage({
         )}
       </section>
 
-      <UptimeBar monitorId={monitor.id} />
+      <UptimeBar monitorId={monitor.id} monitorType={monitor.type} />
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">

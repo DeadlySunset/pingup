@@ -13,6 +13,60 @@
   "header": {
     "pricing": "Pricing"
   },
+  "profile": {
+    "tier": {
+      "free": "Free",
+      "pro": "Pro"
+    },
+    "renewsBy": "Renews by {date}",
+    "manage": "Manage",
+    "upgrade": "Upgrade",
+    "statMonitors": "Monitors",
+    "statChannels": "Verified channels",
+    "statInterval": "Min interval",
+    "statIntervalValue": "{n} min"
+  },
+  "ads": {
+    "label": "Sponsored area",
+    "sponsored": "Sponsored",
+    "removeAds": "Remove ads with Pro →",
+    "upsell": {
+      "kicker": "Pingup Pro",
+      "title": "Make this ad disappear.",
+      "body": "Pro removes ads, unlocks 25 monitors, 1-minute checks, Telegram alerts, and a public status page. $9/mo, paid in TON.",
+      "cta": "See Pro plan"
+    }
+  },
+  "legal": {
+    "terms": {
+      "title": "Terms of Service",
+      "back": "Back",
+      "updated": "Last updated: 2026-04-25",
+      "intro": "By using Pingup you agree to these terms. We try to keep them short and human.",
+      "items": [
+        "Pingup is a monitoring service. We make a best effort to deliver alerts, but we don't guarantee uninterrupted service or alert delivery in all conditions.",
+        "Use Pingup only for systems you own or are authorized to monitor. Don't use it to test, scan, or attack third-party infrastructure.",
+        "Paid plans are billed in TON. Prices are quoted at checkout time and locked in for that invoice. Refunds are not automatic — contact us if you have a problem.",
+        "We may suspend accounts that abuse the service (e.g. monitoring URLs in violation of their terms, spamming, attempting to circumvent limits).",
+        "These terms can change. Continued use after a change means you accept the new terms."
+      ],
+      "contact": "Questions? Email us at hello@pingup.dev."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "back": "Back",
+      "updated": "Last updated: 2026-04-25",
+      "intro": "We try to collect as little as possible. Here's exactly what we keep.",
+      "items": [
+        "Account data: name, email, avatar URL, and GitHub user ID — all from your GitHub OAuth login. We use these to identify you and send alerts to your email.",
+        "Monitor data: the URLs and check history you create. Stored on our servers and shown back to you. Public status pages are only shared on links you explicitly opt in to.",
+        "Payments: TON wallet addresses appear in our incoming-tx logs. We don't link them to your account beyond matching the comment to your invoice.",
+        "Analytics: no third-party trackers. We may keep aggregate request counts for capacity planning.",
+        "You can delete your account at any time. Email hello@pingup.dev — we respond within a few days and remove all your data."
+      ],
+      "contact": "Privacy questions? Email hello@pingup.dev."
+    }
+  },
   "errors": {
     "title": "Something went wrong",
     "body": "We hit an unexpected error rendering this page. The error has been logged and you can try again.",
@@ -369,6 +423,10 @@
       "down": "Mostly down",
       "noData": "No data"
     },
+    "heartbeatNote": "For heartbeat monitors, uptime is the ratio of successful pings to total recorded checks (which include missed-heartbeat events). It's a good signal, not a wall-clock SLA.",
+    "currentlyDownSince": "Currently down · since {when} ({rel})",
+    "lastIncident": "Last incident · {when} ({rel})",
+    "noIncidents": "No incidents recorded.",
     "poweredByPrefix": "Powered by"
   },
   "subscribe": {

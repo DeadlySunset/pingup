@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
-import { auth } from "@/lib/auth";
+import { auth, signIn } from "@/lib/auth";
 import { getSubscription } from "@/lib/subscription";
 import { startCheckout } from "@/app/actions/subscription";
 import { TIERS } from "@/lib/ton/config";
 
-type Reason = "monitors" | "interval" | "telegram";
+type Reason = "monitors" | "interval" | "telegram" | "statusPage";
 function isReason(v: unknown): v is Reason {
-  return v === "monitors" || v === "interval" || v === "telegram";
+  return v === "monitors" || v === "interval" || v === "telegram" || v === "statusPage";
 }
 
 export default async function PricingPage({
@@ -110,18 +110,31 @@ export default async function PricingPage({
           ]}
           cta={
             <div className="mt-2 flex flex-col gap-2">
-              <form action={startCheckout}>
-                <input type="hidden" name="period" value="monthly" />
-                <button
-                  type="submit"
-                  disabled={!signedIn}
-                  className="w-full rounded-md bg-orange-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-orange-700 active:scale-[0.98] disabled:opacity-50 dark:bg-amber-500 dark:text-black dark:hover:bg-amber-400"
+              {signedIn ? (
+                <form action={startCheckout}>
+                  <input type="hidden" name="period" value="monthly" />
+                  <button
+                    type="submit"
+                    className="w-full rounded-md bg-orange-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-orange-700 active:scale-[0.98] dark:bg-amber-500 dark:text-black dark:hover:bg-amber-400"
+                  >
+                    {t("subscribeMonthly", { price: pro.monthlyUsd })}
+                  </button>
+                </form>
+              ) : (
+                <form
+                  action={async () => {
+                    "use server";
+                    await signIn("github", { redirectTo: "/pricing" });
+                  }}
                 >
-                  {signedIn
-                    ? t("subscribeMonthly", { price: pro.monthlyUsd })
-                    : t("signInFirst")}
-                </button>
-              </form>
+                  <button
+                    type="submit"
+                    className="w-full rounded-md bg-orange-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-orange-700 active:scale-[0.98] dark:bg-amber-500 dark:text-black dark:hover:bg-amber-400"
+                  >
+                    {t("signInFirst")}
+                  </button>
+                </form>
+              )}
               {signedIn && (
                 <form action={startCheckout}>
                   <input type="hidden" name="period" value="annual" />

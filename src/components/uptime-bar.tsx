@@ -11,10 +11,12 @@ type DailyAgg = {
 
 export async function UptimeBar({
   monitorId,
+  monitorType,
   historyDays = 60,
   uptimeWindowDays = 30,
 }: {
   monitorId: string;
+  monitorType?: "heartbeat" | "ping";
   historyDays?: number;
   uptimeWindowDays?: number;
 }) {
@@ -125,6 +127,9 @@ export async function UptimeBar({
           <LegendDot color="bg-rose-500" label={t("legend.down")} />
           <LegendDot color="bg-zinc-300 dark:bg-zinc-700" label={t("legend.noData")} />
         </div>
+        {monitorType === "heartbeat" && (
+          <p className="text-[11px] text-zinc-500">{t("heartbeatNote")}</p>
+        )}
       </div>
     </div>
   );

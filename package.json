@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "i18n:audit": "tsx scripts/audit-i18n.ts"
+    "i18n:audit": "tsx scripts/audit-i18n.ts",
+    "check": "npm run i18n:audit && npm test && tsc --noEmit"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.2",
