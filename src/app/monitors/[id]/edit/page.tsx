@@ -9,6 +9,7 @@ import {
   updateHeartbeatMonitor,
   updatePingMonitor,
 } from "@/app/actions/monitors";
+import { getSubscription } from "@/lib/subscription";
 import { SubmitButton } from "@/components/submit-button";
 
 const HEARTBEAT_INTERVALS = [
@@ -54,6 +55,9 @@ export default async function EditMonitorPage({
     .limit(1);
   if (!monitor) notFound();
 
+  const sub = await getSubscription(session.user.id);
+  const isPro = sub.tier === "pro";
+
   const errorMap: Record<string, string> = {
     name: t("monitors.new.errors.name"),
     interval: t("monitors.new.errors.interval"),
@@ -95,6 +99,11 @@ export default async function EditMonitorPage({
 
           <NameField t={t} defaultValue={monitor.name} />
           <EnabledField t={t} defaultChecked={monitor.enabled} />
+          <PublicStatusField
+            t={t}
+            isPro={isPro}
+            slug={monitor.publicSlug}
+          />
 
           <fieldset className="flex flex-col gap-2">
             <legend className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
@@ -130,6 +139,11 @@ export default async function EditMonitorPage({
 
           <NameField t={t} defaultValue={monitor.name} />
           <EnabledField t={t} defaultChecked={monitor.enabled} />
+          <PublicStatusField
+            t={t}
+            isPro={isPro}
+            slug={monitor.publicSlug}
+          />
 
           <label className="flex flex-col gap-1">
             <span className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
@@ -269,6 +283,65 @@ function EnabledField({
         <span className="text-xs text-zinc-500">
           {t("monitors.edit.enabledHint")}
         </span>
+      </div>
+    </label>
+  );
+}
+
+function PublicStatusField({
+  t,
+  isPro,
+  slug,
+}: {
+  t: (k: string) => string;
+  isPro: boolean;
+  slug: string | null;
+}) {
+  const isPublic = !!slug;
+  if (!isPro) {
+    return (
+      <div className="flex flex-col gap-2 rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-medium">
+              {t("monitors.edit.publicStatus.title")}
+              <span className="ml-2 rounded-full bg-orange-600 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white dark:bg-amber-500 dark:text-black">
+                {t("monitors.edit.publicStatus.proBadge")}
+              </span>
+            </span>
+            <span className="text-xs text-zinc-500">
+              {t("monitors.edit.publicStatus.bodyLocked")}
+            </span>
+          </div>
+          <Link
+            href="/pricing?reason=statusPage"
+            className="shrink-0 rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+          >
+            {t("monitors.edit.publicStatus.upgrade")}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <label className="flex items-start gap-3 rounded-md border border-zinc-200 bg-white p-3 text-sm dark:border-zinc-800 dark:bg-zinc-900">
+      <input
+        type="checkbox"
+        name="makePublic"
+        defaultChecked={isPublic}
+        className="mt-0.5 h-4 w-4 rounded border-zinc-300 text-orange-600 focus:ring-orange-600 dark:border-zinc-700 dark:bg-zinc-900 dark:text-amber-500 dark:focus:ring-amber-500"
+      />
+      <div className="flex flex-col gap-0.5">
+        <span className="font-medium">{t("monitors.edit.publicStatus.title")}</span>
+        <span className="text-xs text-zinc-500">
+          {t("monitors.edit.publicStatus.body")}
+        </span>
+        {isPublic && slug && (
+          <span className="mt-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+            /status/{slug}
+          </span>
+        )}
       </div>
     </label>
   );

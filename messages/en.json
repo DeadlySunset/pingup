@@ -133,7 +133,9 @@
       "deleting": "Deleting…",
       "deleteConfirm": "Delete {name}? All check history will be lost. This can't be undone.",
       "edit": "Edit",
-      "disabled": "disabled"
+      "disabled": "disabled",
+      "publicStatusTitle": "Public status page",
+      "publicStatusHint": "Anyone with this link sees the current status, uptime, and 60-day history. No login required."
     },
     "edit": {
       "title": "Edit · {name}",
@@ -145,6 +147,13 @@
       "saving": "Saving…",
       "ping": {
         "urlHint": "Changing this resets the current status — we'll re-evaluate on the next tick."
+      },
+      "publicStatus": {
+        "title": "Publish a status page",
+        "proBadge": "Pro",
+        "body": "Anyone with the link sees current status, uptime, and 60-day history — no login. Toggle off to make it private again.",
+        "bodyLocked": "Share a public uptime page with customers. Pro plan unlocks this for every monitor.",
+        "upgrade": "See pricing"
       }
     }
   },
@@ -308,9 +317,35 @@
     "reason": {
       "monitors": "You're at the {limit}-monitor limit on Free. Upgrade to Pro for more.",
       "interval": "Check intervals under {interval} minutes are Pro-only.",
-      "telegram": "Telegram alerts are Pro-only. Email alerts work on every plan."
+      "telegram": "Telegram alerts are Pro-only. Email alerts work on every plan.",
+      "statusPage": "Public status pages are a Pro feature. Upgrade to share uptime with customers."
     },
     "footnote": "No card processor fees, no cancellation fees. Stop paying — we'll downgrade you to Free at the end of your paid period."
+  },
+  "status": {
+    "kicker": "Live status",
+    "headline": {
+      "up": "All systems operational",
+      "down": "Service is down",
+      "unknown": "Awaiting first check"
+    },
+    "lastCheck": "Last check · {when}",
+    "noChecksYet": "Waiting for the first check to land.",
+    "uptimeLabel": "Uptime",
+    "uptimeWindow": "Last {days} days",
+    "checksLabel": "Checks recorded",
+    "checksWindow": "Last {days} days",
+    "historyTitle": "Daily uptime · last {days} days",
+    "historyHint": "Each cell is one day. Hover for the exact uptime ratio.",
+    "dayLine": "{pct}% up — {up} successful, {down} failed",
+    "dayNoData": "No checks recorded",
+    "legend": {
+      "allUp": "100% up",
+      "partial": "Partial outage",
+      "down": "Mostly down",
+      "noData": "No data"
+    },
+    "poweredByPrefix": "Powered by"
   },
   "subscribe": {
     "title": "Pay with TON",

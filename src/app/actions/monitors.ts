@@ -9,6 +9,7 @@ import { monitors } from "@/lib/db/schema";
 import { attachAllVerifiedChannelsToMonitor } from "@/app/actions/channels";
 import { getSubscription } from "@/lib/subscription";
 import { computeGrace } from "@/lib/monitors/grace";
+import { generatePublicSlug } from "@/lib/monitors/slug";
 
 const ALLOWED_HEARTBEAT_INTERVALS_SEC = [5 * 60, 15 * 60, 30 * 60, 60 * 60, 6 * 3600, 24 * 3600];
 const ALLOWED_PING_INTERVALS_SEC = [60, 5 * 60, 15 * 60, 60 * 60];
@@ -145,6 +146,14 @@ export async function updateHeartbeatMonitor(formData: FormData) {
     .limit(1);
   if (!existing || existing.type !== "heartbeat") redirect("/");
 
+  const sub = await getSubscription(session.user.id);
+  const wantsPublic = formData.get("makePublic") === "on";
+  if (wantsPublic && sub.tier !== "pro") {
+    redirect("/pricing?reason=statusPage");
+  }
+  // Preserve slug while enabled; clear it when toggled off.
+  const publicSlug = wantsPublic ? (existing.publicSlug ?? generatePublicSlug()) : null;
+
   await db
     .update(monitors)
     .set({
@@ -152,6 +161,7 @@ export async function updateHeartbeatMonitor(formData: FormData) {
       enabled,
       expectedIntervalSec: intervalSec,
       graceSec: computeGrace(intervalSec),
+      publicSlug,
     })
     .where(eq(monitors.id, monitorId));
 
@@ -215,6 +225,12 @@ export async function updatePingMonitor(formData: FormData) {
     .limit(1);
   if (!existing || existing.type !== "ping") redirect("/");
 
+  const wantsPublic = formData.get("makePublic") === "on";
+  if (wantsPublic && sub.tier !== "pro") {
+    redirect("/pricing?reason=statusPage");
+  }
+  const publicSlug = wantsPublic ? (existing.publicSlug ?? generatePublicSlug()) : null;
+
   // URL is the identity of a ping monitor. If it changed, the previous status
   // belongs to a different endpoint — reset live state but keep check history.
   const newUrl = parsed.toString();
@@ -229,6 +245,7 @@ export async function updatePingMonitor(formData: FormData) {
       intervalSec,
       expectedStatus,
       timeoutMs,
+      publicSlug,
       ...(urlChanged
         ? {
             currentStatus: "unknown" as const,

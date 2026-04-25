@@ -46,6 +46,7 @@ export default async function MonitorDetailPage({
     ? `${appUrl}/p/${monitor.pingToken}`
     : null;
   const isPingMonitor = monitor.type === "ping";
+  const publicStatusUrl = monitor.publicSlug ? `${appUrl}/status/${monitor.publicSlug}` : null;
 
   const dateTimeFmt = new Intl.DateTimeFormat(locale, {
     dateStyle: "medium",
@@ -149,6 +150,33 @@ export default async function MonitorDetailPage({
             >
               ↗
             </a>
+          </div>
+        </section>
+      )}
+
+      {publicStatusUrl && (
+        <section className="flex flex-col gap-3 rounded-lg border border-emerald-200 bg-emerald-50/50 p-5 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+          <div className="flex flex-col gap-1">
+            <h2 className="text-sm font-medium">
+              {t("monitors.detail.publicStatusTitle")}
+            </h2>
+            <p className="text-xs text-zinc-600 dark:text-zinc-400">
+              {t("monitors.detail.publicStatusHint")}
+            </p>
+          </div>
+          <div className="flex items-center gap-2 rounded-md border border-emerald-200 bg-white p-2 dark:border-emerald-900/50 dark:bg-zinc-950">
+            <code className="flex-1 overflow-x-auto whitespace-nowrap font-mono text-xs text-zinc-800 dark:text-zinc-200">
+              {publicStatusUrl}
+            </code>
+            <a
+              href={publicStatusUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-md border border-zinc-300 px-3 py-1 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+            >
+              ↗
+            </a>
+            <CopyButton text={publicStatusUrl} />
           </div>
         </section>
       )}

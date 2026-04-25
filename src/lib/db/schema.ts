@@ -99,6 +99,9 @@ export const monitors = pgTable("monitor", {
   // Shared state
   currentStatus: text("currentStatus").$type<MonitorStatus>().notNull().default("unknown"),
   lastStatusChangeAt: timestamp("lastStatusChangeAt"),
+  // When set, monitor is reachable on /status/{publicSlug} without auth.
+  // Pro-only feature; cleared when user toggles the public page off.
+  publicSlug: text("publicSlug").unique(),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
 });
 
