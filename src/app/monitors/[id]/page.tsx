@@ -8,6 +8,7 @@ import { checks, monitors } from "@/lib/db/schema";
 import { deleteMonitor } from "@/app/actions/monitors";
 import { CopyButton } from "@/components/copy-button";
 import { DangerButton } from "@/components/danger-button";
+import { UptimeBar } from "@/components/uptime-bar";
 
 function formatInterval(sec: number | null, t: (k: string) => string): string {
   if (!sec) return "—";
@@ -242,6 +243,8 @@ export default async function MonitorDetailPage({
           </>
         )}
       </section>
+
+      <UptimeBar monitorId={monitor.id} />
 
       <section className="flex flex-col gap-3">
         <h2 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">

@@ -10,6 +10,20 @@
     "durationHour": "{n} h",
     "durationDay": "{n} d"
   },
+  "header": {
+    "pricing": "Pricing"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "body": "We hit an unexpected error rendering this page. The error has been logged and you can try again.",
+    "tryAgain": "Try again",
+    "monitorTitle": "Couldn't load this monitor",
+    "monitorBody": "We failed to render this monitor. Try reloading, or head back to the dashboard.",
+    "allMonitors": "All monitors",
+    "backHome": "← Back home",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or was moved."
+  },
   "home": {
     "signedInAs": "Signed in as {name}",
     "signOut": "Sign out",
@@ -17,7 +31,13 @@
     "noMonitors": "You haven't added any monitors yet.",
     "newMonitor": "New monitor",
     "channels": "Alert channels",
-    "lastPingPrefix": "last ping"
+    "lastPingPrefix": "last ping",
+    "onboarding": {
+      "title": "Add an alert channel",
+      "body": "Without a verified channel, alerts have nowhere to go. Email is automatic — Telegram unlocks on Pro.",
+      "ctaChannels": "Set up channels",
+      "dismiss": "Dismiss"
+    }
   },
   "channels": {
     "title": "Alert channels",
@@ -49,7 +69,11 @@
       "connectedAs": "Telegram — connected as {target}",
       "verifyTitle": "Verify in Telegram",
       "verifyBody": "Open {bot} and send the command below. Your verification code is {code}.",
-      "openBot": "Open bot in Telegram"
+      "openBot": "Open bot in Telegram",
+      "lockedTitle": "Telegram alerts",
+      "proBadge": "Pro",
+      "lockedBody": "Get instant push notifications on your phone. Pro plan unlocks Telegram alongside email.",
+      "upgrade": "See pricing"
     }
   },
   "monitors": {

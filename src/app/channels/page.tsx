@@ -13,6 +13,7 @@ import {
 import { SubmitButton } from "@/components/submit-button";
 import { DangerButton } from "@/components/danger-button";
 import { CopyButton } from "@/components/copy-button";
+import { getSubscription } from "@/lib/subscription";
 
 export default async function ChannelsPage({
   searchParams,
@@ -24,11 +25,14 @@ export default async function ChannelsPage({
   const [t, locale] = await Promise.all([getTranslations(), getLocale()]);
   const sp = await searchParams;
 
-  const channels = await db
-    .select()
-    .from(alertChannels)
-    .where(eq(alertChannels.userId, session.user.id))
-    .orderBy(desc(alertChannels.createdAt));
+  const [channels, sub] = await Promise.all([
+    db
+      .select()
+      .from(alertChannels)
+      .where(eq(alertChannels.userId, session.user.id))
+      .orderBy(desc(alertChannels.createdAt)),
+    getSubscription(session.user.id),
+  ]);
 
   const emails = channels.filter((c) => c.kind === "email");
   const telegrams = channels.filter((c) => c.kind === "telegram");
@@ -218,7 +222,7 @@ export default async function ChannelsPage({
           </ul>
         )}
 
-        {!pendingTelegram && (
+        {!pendingTelegram && sub.allowsTelegram && (
           <form action={createTelegramChannel}>
             <SubmitButton
               pendingLabel={t("channels.adding")}
@@ -227,6 +231,30 @@ export default async function ChannelsPage({
               {t("channels.telegram.add")}
             </SubmitButton>
           </form>
+        )}
+
+        {!pendingTelegram && !sub.allowsTelegram && (
+          <div className="flex flex-col gap-2 rounded-md border border-zinc-200 bg-zinc-50 p-3 text-sm dark:border-zinc-800 dark:bg-zinc-950">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-col gap-0.5">
+                <span className="font-medium">
+                  {t("channels.telegram.lockedTitle")}
+                  <span className="ml-2 rounded-full bg-orange-600 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-white dark:bg-amber-500 dark:text-black">
+                    {t("channels.telegram.proBadge")}
+                  </span>
+                </span>
+                <span className="text-xs text-zinc-500">
+                  {t("channels.telegram.lockedBody")}
+                </span>
+              </div>
+              <Link
+                href="/pricing?reason=telegram"
+                className="shrink-0 rounded-md border border-zinc-300 px-3 py-1.5 text-xs font-medium hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+              >
+                {t("channels.telegram.upgrade")}
+              </Link>
+            </div>
+          </div>
         )}
       </section>
 

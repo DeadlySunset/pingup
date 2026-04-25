@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { desc, eq } from "drizzle-orm";
+import { and, count, desc, eq, isNotNull } from "drizzle-orm";
 import { getLocale, getTranslations } from "next-intl/server";
 import { auth, signIn, signOut } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { monitors } from "@/lib/db/schema";
+import { alertChannels, monitors, users } from "@/lib/db/schema";
 import { Sparkline } from "@/components/sparkline";
+import { dismissOnboarding } from "@/app/actions/user";
 
 type Bullet = string;
 type Step = { n: string; title: string; body: string };
@@ -274,14 +275,32 @@ export default async function Home() {
     );
   }
 
-  const [userMonitors, locale] = await Promise.all([
+  const [userMonitors, locale, verifiedChannelRow, userRow] = await Promise.all([
     db
       .select()
       .from(monitors)
       .where(eq(monitors.userId, session.user.id))
       .orderBy(desc(monitors.createdAt)),
     getLocale(),
+    db
+      .select({ count: count() })
+      .from(alertChannels)
+      .where(
+        and(
+          eq(alertChannels.userId, session.user.id),
+          isNotNull(alertChannels.verifiedAt),
+        ),
+      ),
+    db
+      .select({ dismissed: users.onboardingDismissed })
+      .from(users)
+      .where(eq(users.id, session.user.id))
+      .limit(1),
   ]);
+
+  const verifiedChannelCount = Number(verifiedChannelRow[0]?.count ?? 0);
+  const showOnboarding =
+    !(userRow[0]?.dismissed ?? false) && verifiedChannelCount === 0;
 
   const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto" });
   const now = new Date();
@@ -323,6 +342,36 @@ export default async function Home() {
           </form>
         </div>
       </div>
+
+      {showOnboarding && (
+        <div className="flex flex-col gap-3 rounded-lg border border-orange-200 bg-orange-50/60 p-4 text-sm dark:border-amber-900/40 dark:bg-amber-950/20">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex flex-col gap-1">
+              <span className="font-medium">{t("home.onboarding.title")}</span>
+              <span className="text-xs text-zinc-600 dark:text-zinc-400">
+                {t("home.onboarding.body")}
+              </span>
+            </div>
+            <form action={dismissOnboarding}>
+              <button
+                type="submit"
+                aria-label={t("home.onboarding.dismiss")}
+                className="rounded-md p-1.5 text-xs text-zinc-500 hover:bg-zinc-200/60 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+              >
+                ✕
+              </button>
+            </form>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/channels"
+              className="rounded-md bg-orange-600 px-3 py-1.5 text-xs font-medium text-white transition-all duration-200 hover:bg-orange-700 active:scale-[0.98] dark:bg-amber-500 dark:text-black dark:hover:bg-amber-400"
+            >
+              {t("home.onboarding.ctaChannels")}
+            </Link>
+          </div>
+        </div>
+      )}
 
       {userMonitors.length === 0 ? (
         <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-zinc-300 p-6 text-sm text-zinc-500 dark:border-zinc-700">

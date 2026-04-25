@@ -10,6 +10,20 @@
     "durationHour": "{n} ч",
     "durationDay": "{n} дн"
   },
+  "header": {
+    "pricing": "Тарифы"
+  },
+  "errors": {
+    "title": "Что-то пошло не так",
+    "body": "При рендере страницы произошла неожиданная ошибка. Мы залогировали её — можно попробовать ещё раз.",
+    "tryAgain": "Попробовать снова",
+    "monitorTitle": "Не удалось загрузить монитор",
+    "monitorBody": "Рендер монитора провалился. Попробуй перезагрузить или вернись на дашборд.",
+    "allMonitors": "Все мониторы",
+    "backHome": "← На главную",
+    "notFoundTitle": "Страница не найдена",
+    "notFoundBody": "Страницы, которую ты ищешь, не существует или она была перемещена."
+  },
   "home": {
     "signedInAs": "Вы вошли как {name}",
     "signOut": "Выйти",
@@ -17,7 +31,13 @@
     "noMonitors": "Ты ещё не добавил ни одного монитора.",
     "newMonitor": "Новый монитор",
     "channels": "Каналы алертов",
-    "lastPingPrefix": "последний пинг"
+    "lastPingPrefix": "последний пинг",
+    "onboarding": {
+      "title": "Добавь канал алертов",
+      "body": "Без подтверждённого канала уведомления некуда слать. Email — автоматом, Telegram открывается на Pro.",
+      "ctaChannels": "Настроить каналы",
+      "dismiss": "Закрыть"
+    }
   },
   "channels": {
     "title": "Каналы алертов",
@@ -49,7 +69,11 @@
       "connectedAs": "Telegram — подключён как {target}",
       "verifyTitle": "Подтверди в Telegram",
       "verifyBody": "Открой {bot} и отправь команду ниже. Твой код подтверждения — {code}.",
-      "openBot": "Открыть бота в Telegram"
+      "openBot": "Открыть бота в Telegram",
+      "lockedTitle": "Telegram-алерты",
+      "proBadge": "Pro",
+      "lockedBody": "Мгновенные пуши на телефон. Pro открывает Telegram наряду с email.",
+      "upgrade": "К тарифам"
     }
   },
   "monitors": {
